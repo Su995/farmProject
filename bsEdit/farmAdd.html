@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="js/layui/css/layui.css">
+    <style>
+        #farmAdd li.active > a {
+            color: #0e90d2;
+            border-bottom: 2px solid #0e90d2;
+            background-color: transparent;
+        }
+
+        #farmAdd .nav-tabs{
+            width: 100%;
+            margin: 0 auto;
+            padding:0;
+            border-bottom: 1px solid #c3c3c3;
+        }
+        #farmAdd .nav-tabs a{
+            color: #000;
+            font-size: 18px;
+            font-weight:bold;
+        }
+        #farmAdd .nav-tabs li {
+            padding: 0px 50px;
+            text-align: center;
+        }
+        #farmAdd .form-group{
+            margin-left: 10px;
+            margin-bottom:15px;
+        }
+    </style>
+</head>
+<body>
+<div id="farmAdd">
+    <button class="btn btn-default" id="returnBack">返回</button>
+    <div class="container">
+        <nav class="navbar" role="navigation">
+            <div class="container-fluid">
+                <ul class="nav-tabs row" id="nav_tab" role="tablist">
+                    <li role="presentation" class="active col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                        <a href="#basicInfo" aria-controls="home" role="tab" data-toggle="tab">基本信息</a>
+                    </li>
+                    <li role="presentation" class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                        <a id="TimeMessage" href="#priceManagement" aria-controls="profile" role="tab" data-toggle="tab">价格管理</a>
+                    </li>
+                    <li role="presentation" class="she col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                        <a href="#deliveryArea" aria-controls="messages" role="tab" data-toggle="tab">配送范围设置</a>
+                    </li>
+                    <li role="presentation" class="she col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                        <a href="#farmland" aria-controls="settings" role="tab" data-toggle="tab">农地</a>
+                    </li>
+                </ul>
+            </div>
+
+        </nav>
+
+        <!--tab panel-->
+        <div class="tab-content">
+            <!--TODO 基本信息-->
+            <div role="tabpanel" class="tab-pane active" id="basicInfo">
+                <form>
+                    <div class="form-group">
+                        <span class="listL">农场编号:</span>
+                        <span class=""></span>
+                    </div>
+
+                    <div class="form-group">
+                        <span class="listL">农场名称:</span>
+                        <input type="text">
+                    </div>
+
+                    <div class="form-group">
+                        <span class="listL">地址:</span>
+                        <select name="province" id="province">
+                            <option value="0">广东省</option>
+                        </select>
+
+                        <select name="city" id="city">
+                            <option value="0">广州市</option>
+                        </select>
+
+                        <select name="district" id="district">
+                            <option value="0">天河区</option>
+                        </select>
+                        <input type="text" value="华景软件园">
+                    </div>
+
+                    <div class="form-group">
+                        <span class="listL">经纬度:</span>
+                        <input type="text" disabled>
+                        <button class="btn btn-default">定位</button><!--点击打开地图定位-->
+                        <span>注：经纬度只能定位，不能直接修改，只能通过定位修改</span>
+                    </div>
+
+                    <div class="form-group">
+                        <span class="listL">配置域名或IP:</span>
+                        <input type="text">
+                        <span>如无域名，无需输入http://</span>
+                    </div>
+
+                    <div class="form-group">
+                        <span class="listL">农场主:</span>
+                        <input type="text">
+                        <button class="btn btn-default">选择</button>
+                    </div>
+
+                    <div class="form-group">
+                        <span class="listL">农场主联系方式:</span>
+                        <input type="text">
+                    </div>
+
+                    <div id="farmAddFooter" class="footer">
+                        <button class="btn btn-primary farmAddSave">保存</button>
+                        <button class="btn btn-primary farmAddCancel">取消</button>
+                    </div>
+                </form>
+            </div>
+            <!--TODO 价格管理-->
+            <div role="tabpanel" class="tab-pane" id="priceManagement">
+                <div class="form-group">
+                    <span class="lsitL">农田类型:</span>
+                    <span>农地</span>
+                </div>
+                <div class="form-group">
+                    <span class="listL">基础价格:</span>
+                    <input type="text">
+                </div>
+
+                <div class="form-group presentedIn">
+                    <span class="listL">赠送:</span>
+                    <input type="text" value="" v-model="presentedIn">
+                    <span>/月</span>
+                </div>
+
+                <div v-show="activityTime" id="activityTime">
+                    <span class="need">*</span>
+                    <div class="form-group">
+                        <span class="listL">活动时间</span>
+                        <input type="text" id="startTime">
+                        <input type="text" id="endTime">
+                    </div>
+                </div>
+
+                <hr>
+            </div>
+            <!--TODO 配送范围设置-->
+            <div role="tabpanel" class="tab-pane" id="deliveryArea">
+                <div class="resert now_resert border">马上重启</div>
+                <div id="customRestart">
+                    <div class="resert border" id="CusRestart">
+                        <input type="checkbox" class="resert_radio"> 在
+                        <input type="datetime-local" id="sleeper" class="resert_1">
+                        <div id="compatibilityReset">
+                            <input value="" class="test year" type="text" maxlength="4">-
+                            <input value="" class="test month" type="text" maxlength="2">-
+                            <input value="" class="test day" type="text" maxlength="2">
+                            <input value="" class="test hour" type="text" maxlength="2">:
+                            <input value="" class="test min" type="text" maxlength="2">:
+                            <input value="" class="test sec" type="text" maxlength="2">
+                        </div>
+                        重启
+                    </div>
+                    <div class="border bottom" id="affirm">确认</div>
+                    <div class="border bottom" id="compatibilityaffirm">确认</div>
+                </div>
+
+            </div>
+            <!--TODO 农地-->
+            <div role="tabpanel" class="tab-pane" id="farmland">
+                <h4 class="fl">当前版本：Aip.v1.201702</h4>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="js/jquery.min1.9.1.js"></script>
+<script src="bootstrap/2.3.1/js/bootstrap.min.js"></script>
+<script src="js/vue.min.js"></script>
+<script src="js/layui/layui.js"></script>
+<script src="js/laydate.js"></script>
+<script>
+    $("#farmAdd .nav_tab li").click(function () {
+        $(this).addClass('active').siblings().removeClass('active');
+    });
+    /*设置时间插件*/
+    ;!function(){
+        laydate({
+            elem: '#startTime'
+        })
+    }();
+    /*laydate.render({
+        elem: '#startTime', //指定元素
+        format: 'yyyy年MM月dd日'
+    });
+    laydate.render({
+        elem:'#endTime',
+    })*/
+
+    new Vue({
+        el:'#farmAdd',
+        data:{
+            presentedIn:'',
+            activityTime:false,
+        },
+        watch:{
+            /*监听月份是否有输入 相应显示时间是否显示*/
+            presentedIn:function(result){
+                result ? this.activityTime=true : this.activityTime=false;
+            }
+        }
+    })
+</script>
+</html>

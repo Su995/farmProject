@@ -102,7 +102,7 @@
 
                     <div class="form-group">
                         <span class="listL">配置域名或IP:</span>
-                        <input type="text">
+                        <input type="text" v-model="configIp" @blur.prevent="getIp">
                         <span>如无域名，无需输入http://</span>
                     </div>
 
@@ -225,6 +225,7 @@
     new Vue({
         el: '#farmAdd',
         data: {
+            configIp:'',//IP地址
             presentedIn: '',//农田赠送时间
             morePresentedIn: '',//农田+鸡舍赠送时间
             activityTime: false,
@@ -238,7 +239,16 @@
             morePresentedIn: function (result) {
                 result ? this.activetyTimeMore = true : this.activetyTimeMore = false;
             }
+        },
+        methods:{
+            getIp:function(){
+                var reg = /(\d+)\.(\d+)\.(\d+)\.(\d+)/g;
+                if(!reg.test(this.configIp)){//验证IP
+                    return false;
+                }
+            }
         }
+
     })
 </script>
 </html>

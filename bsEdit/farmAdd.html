@@ -13,24 +13,27 @@
             background-color: transparent;
         }
 
-        #farmAdd .nav-tabs{
+        #farmAdd .nav-tabs {
             width: 100%;
             margin: 0 auto;
-            padding:0;
+            padding: 0;
             border-bottom: 1px solid #c3c3c3;
         }
-        #farmAdd .nav-tabs a{
+
+        #farmAdd .nav-tabs a {
             color: #000;
             font-size: 18px;
-            font-weight:bold;
+            font-weight: bold;
         }
+
         #farmAdd .nav-tabs li {
             padding: 0px 50px;
             text-align: center;
         }
-        #farmAdd .form-group{
+
+        #farmAdd .form-group {
             margin-left: 10px;
-            margin-bottom:15px;
+            margin-bottom: 15px;
         }
     </style>
 </head>
@@ -45,7 +48,8 @@
                         <a href="#basicInfo" aria-controls="home" role="tab" data-toggle="tab">基本信息</a>
                     </li>
                     <li role="presentation" class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                        <a id="TimeMessage" href="#priceManagement" aria-controls="profile" role="tab" data-toggle="tab">价格管理</a>
+                        <a id="TimeMessage" href="#priceManagement" aria-controls="profile" role="tab"
+                           data-toggle="tab">价格管理</a>
                     </li>
                     <li role="presentation" class="she col-xs-3 col-sm-3 col-md-3 col-lg-3">
                         <a href="#deliveryArea" aria-controls="messages" role="tab" data-toggle="tab">配送范围设置</a>
@@ -146,6 +150,30 @@
                 </div>
 
                 <hr>
+
+                <div class="form-group">
+                    <span class="lsitL">农田类型:</span>
+                    <span>农田+鸡舍</span>
+                </div>
+                <div class="form-group">
+                    <span class="listL">基础价格:</span>
+                    <input type="text">
+                </div>
+
+                <div class="form-group presentedIn">
+                    <span class="listL">赠送:</span>
+                    <input type="text" value="" v-model="morePresentedIn">
+                    <span>/月</span>
+                </div>
+
+                <div v-show="activetyTimeMore" id="activetyTimeMore">
+                    <span class="need">*</span>
+                    <div class="form-group">
+                        <span class="listL">活动时间</span>
+                        <input type="text" id="moreStartTime">
+                        <input type="text" id="moreEendTime">
+                    </div>
+                </div>
             </div>
             <!--TODO 配送范围设置-->
             <div role="tabpanel" class="tab-pane" id="deliveryArea">
@@ -178,38 +206,37 @@
 </div>
 </body>
 <script src="js/jquery.min1.9.1.js"></script>
-<script src="bootstrap/2.3.1/js/bootstrap.min.js"></script>
+<script src="bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="js/vue.min.js"></script>
-<script src="js/layui/layui.js"></script>
-<script src="js/laydate.js"></script>
+<script src="js/layDate-v5.0.9/laydate/laydate.js"></script>
 <script>
     $("#farmAdd .nav_tab li").click(function () {
         $(this).addClass('active').siblings().removeClass('active');
     });
-    /*设置时间插件*/
-    ;!function(){
-        laydate({
-            elem: '#startTime'
-        })
-    }();
-    /*laydate.render({
+    laydate.render({
         elem: '#startTime', //指定元素
-        format: 'yyyy年MM月dd日'
+        format: '选择开始时间'
     });
     laydate.render({
-        elem:'#endTime',
-    })*/
+        elem: '#endTime',
+        format: '选择结束时间'
+    })
 
     new Vue({
-        el:'#farmAdd',
-        data:{
-            presentedIn:'',
-            activityTime:false,
+        el: '#farmAdd',
+        data: {
+            presentedIn: '',//农田赠送时间
+            morePresentedIn: '',//农田+鸡舍赠送时间
+            activityTime: false,
+            activetyTimeMore: false,
         },
-        watch:{
+        watch: {
             /*监听月份是否有输入 相应显示时间是否显示*/
-            presentedIn:function(result){
-                result ? this.activityTime=true : this.activityTime=false;
+            presentedIn: function (result) {
+                result ? this.activityTime = true : this.activityTime = false;
+            },
+            morePresentedIn: function (result) {
+                result ? this.activetyTimeMore = true : this.activetyTimeMore = false;
             }
         }
     })

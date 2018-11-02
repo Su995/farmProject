@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="js/layDate-v5.0.9/laydate/laydate.js"></script>
+<script src="js/vue.min.js"></script>
+<body>
+<div id="div1">
+    <input type="text" v-model="configIp" @blur.prevent="getIp">
+    <input type="text" v-model="arrObj.name">
+</div>
+
+</body>
+<script>
+    new Vue({
+        el: '#div1',
+        data: {
+            configIp:'',
+            arrObj:{}
+        },
+        watch:{
+            arrObj:{
+                handler:function(val){
+                    console.log(val)
+                },
+                deep:true
+            }
+        },
+        methods: {
+            /*验证IP*/
+            verificationIp:function(str){
+                var re = /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/;//正则表达式
+                if (re.test(str)) {
+                    if (RegExp.$1 < 256 && RegExp.$2 < 256 && RegExp.$3 < 256 && RegExp.$4 < 256
+                        && RegExp.$1.length < 4
+                        && RegExp.$2.length < 4
+                        && RegExp.$3.length < 4
+                        && RegExp.$4.length < 4)//排除数字前面包含0的可能
+                        return true;
+                }
+                return false;
+            },
+            /*验证域名Url*/
+            verficationUrl:function(str){
+                var regUrl  = /^http[s]?:\/\/[\w-]+(\.[\w-]+)+([\w-\.\/?%&=]*)?$/;
+                if(!regUrl.test(str)){return false}
+            },
+            getIp: function () {
+                console.log(this.verificationIp(this.configIp))
+                console.log(this.verficationUrl(this.configIp))
+                var regIp = /(\d+)\.(\d+)\.(\d+)\.(\d+)/g;
+                var regUrl  = /^http[s]?:\/\/[\w-]+(\.[\w-]+)+([\w-\.\/?%&=]*)?$/;
+
+                if(!this.verificationIp(this.configIp) && !this.verficationUrl(this.configIp)){
+                    console.log("错误")
+                }else{
+                    console.log("正确")
+                }
+            }
+        }
+    })
+</script>
+</html>
